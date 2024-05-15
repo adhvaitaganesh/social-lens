@@ -6,10 +6,15 @@ import { LoginForm } from "./LoginForm";
 import { LogoutButton } from "./LogoutButton";
 import { truncateEthAddress } from "@/utils/truncateEthAddress";
 import { DisconnectWalletButton } from "./DisconnectWalletButton";
+import { SignUpForm } from "./signUpForm";
+import  UseCreatePost  from "./createPost";
+import  {UsePublication}  from "./UsePublication";
+import { UsePublications } from "./UsePublications";
 
 export function WelcomeToLens() {
   const { isConnected, address } = useWagmiAccount();
   const { data: session } = useLensSession();
+
 
   // step 1. connect wallet
   if (!isConnected) {
@@ -28,6 +33,9 @@ export function WelcomeToLens() {
         <p className="mb-4 text-gray-500">Connected wallet: {truncateEthAddress(address)}</p>
         <LoginForm owner={address} />
 
+        <p className="mb-4 text-gray-500">Connected wallet: {truncateEthAddress(address)}</p>
+        <SignUpForm owner={address} />
+
         <div className="mt-2">
           <DisconnectWalletButton />
         </div>
@@ -39,18 +47,14 @@ export function WelcomeToLens() {
   if (session && session.type === SessionType.WithProfile) {
     return (
       <>
-        <p className="mb-4 text-gray-500">
-          You are logged in as{" "}
-          <span className="text-gray-800 font-semibold">
-            {session.profile.handle?.fullHandle ?? session.profile.id}
-          </span>
-          .
-        </p>
+        <p className="mb-4 text-gray-500">write your post: {truncateEthAddress(address)}</p>
+        <UseCreatePost />
+        <UsePublications id={session.profile.id} />
         <LogoutButton />
       </>
     );
   }
 
   // you can handle other session types here
-  return null;
+  return;
 }
